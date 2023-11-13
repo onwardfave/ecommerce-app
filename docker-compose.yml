@@ -4,14 +4,15 @@ services:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME} # Optional: Create a default database
+      MYSQL_USER: ${ECOMMERCE-APP-USER} # Optional: Create a regular user
+
     ports:
       - "${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}"
     volumes:
       - db-data:/var/lib/mysql
-      - ./sql-scripts:/docker-entrypoint-initdb.d/create-dbs.sql
+      - ./sql-scripts:/docker-entrypoint-initdb.d
   reverseproxy-service:
     build: ./reverseproxy-service # The Dockerfile and nginx.conf are in a directory called reverseproxy-service
     ports:
