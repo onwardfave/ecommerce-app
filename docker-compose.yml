@@ -1,0 +1,58 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./sql-scripts:/docker-entrypoint-initdb.d/create-dbs.sql
+  reverseproxy-service:
+    build: ./reverseproxy-service # The Dockerfile and nginx.conf are in a directory called reverseproxy-service
+    ports:
+      - "80:8080" # Map port 80 on the host to port 8080 on the Nginx container
+    depends_on:
+      - auth-service
+      - product-service
+      - order-service
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "3001:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - AUTH_DB_NAME=${AUTH_DB_NAME}
+    depends_on:
+      - mysql
+  product-service:
+    build: ./product-service
+    ports:
+      - "3002:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - PRODUCTS_DB_NAME=${PRODUCTS_DB_NAME}
+    depends_on:
+      - mysql
+  order-service:
+    build: ./order-service
+    ports:
+      - "3003:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - ORDERS_DB_NAME=${ORDERS_DB_NAME}
+    depends_on:
+      - mysql
+
+volumes:
+  db-data:
