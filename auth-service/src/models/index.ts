@@ -1,44 +1,23 @@
-import { Sequelize, Options } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
+import { User } from './user.model';
 
-interface ConnectionParams {
-    database: string | undefined;
-    username: string | undefined;
-    password: string | undefined;
-    options: Options;
-}
-
-const connectionParams: ConnectionParams = {
+// You don't need a separate interface for ConnectionParams here
+const sequelize = new Sequelize({
     database: process.env.AUTH_DB_NAME,
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
-    options: {
-        host: process.env.DB_HOST,
-        dialect: 'mysql',
-        port: parseInt(process.env.DB_PORT || '3306'), // Default to 3306 if undefined
-        logging: false,
-        pool: {
-            max: 10,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
-        }
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    logging: false,
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
     }
-}
+});
 
-console.log("Connection params at auth service: " + JSON.stringify(connectionParams));
-
-const sequelize = new Sequelize(
-    connectionParams.database || '', // Fallback to default value if undefined
-    connectionParams.username || '',
-    connectionParams.password || '',
-    connectionParams.options
-);
-
-const modelDefiners: Array<(sequelize: Sequelize) => void> = [
-    // Add model definer functions here
-    // Example: import { defineUserModel } from './userModel'; and then add defineUserModel
-];
-
-modelDefiners.forEach(modelDefiner => modelDefiner(sequelize));
+sequelize.addModels([User]);
 
 export { sequelize };

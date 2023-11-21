@@ -1,0 +1,12 @@
+Running the containers in dev env
+==============================================
+docker-compose --env-file .env.dev up --build
+
+
+Remove unused Docker images and containers
+===============================================
+docker system prune
+
+to clean up unused objects
+===============================================
+docker image prune 
