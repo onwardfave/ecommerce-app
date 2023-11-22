@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverseproxy-deployment
+  labels:
+    app: reverseproxy
+spec:
+  replicas: 1 # Example number of replicas
+  selector:
+    matchLabels:
+      app: reverseproxy
+  template:
+    metadata:
+      labels:
+        app: reverseproxy
+    spec:
+      containers:
+      - name: reverseproxy
+        image: docker.io/onwardfave/reverseproxy  # Use your local image tag
+        imagePullPolicy: Always  # Use the local image if available
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"  # Requested memory
+          limits:
+            cpu: "500m"
+            memory: "512Mi"  # Memory limit
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverseproxy-service
+spec:
+  selector:
+    app: reverseproxy
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer # or ClusterIP, depending on your needs
