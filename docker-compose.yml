@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_PASSWORD: ${DB_PASS}
       MYSQL_DATABASE: ${DB_NAME} # Optional: Create a default database
-      MYSQL_USER: ${ECOMMERCE-APP-USER} # Optional: Create a regular user
+      MYSQL_USER: ${ECOMMERCE_APP_USER} # Optional: Create a regular user
 
     ports:
       - "${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}"
