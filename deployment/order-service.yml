@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: order-service
-        image: docker.io/onwardfave/order-service:v0  # Use your local image tag
+        image: docker.io/onwardfave/order-service:v0.1  # Use your local image tag
         imagePullPolicy: Always  # Use the local image if available
         resources:
           requests:
