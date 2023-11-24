@@ -33,17 +33,20 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: rootpassword
+              name: ecommerce-secret  # This should match the name of your Secret
+              key: DB_PASS  # This key should match the key in your Secret
         - name: MYSQL_DATABASE
-          value: ecommerceDB
+          value: ecommerceDB  # This is not secret, so it's directly in the ConfigMap
         - name: MYSQL_USER
-          value: ecommerceappuser
+          valueFrom:
+            secretKeyRef:
+              name: ecommerce-secret
+              key: DB_USER  # The key in your Secret
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
-              key: userpassword
+              name: ecommerce-secret
+              key: DB_PASS
         ports:
         - containerPort: 3306
         volumeMounts:

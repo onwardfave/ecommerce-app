@@ -24,20 +24,23 @@ spec:
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
-              name: db-config
-              key: host
+              name: ecommerce-config  # Name of your ConfigMap
+              key: DB_HOST
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secret
-              key: username
+              name: ecommerce-secret  # Name of your Secret
+              key: DB_USER
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
-              name: db-secret
-              key: password
+              name: ecommerce-secret  # Name of your Secret
+              key: DB_PASS
         - name: AUTH_DB_NAME
-          value: "authDB"
+          valueFrom:
+            configMapKeyRef:
+              name: ecommerce-config  # Name of your ConfigMap
+              key: AUTH_DB_NAME
         resources:
           requests:
             cpu: "100m"

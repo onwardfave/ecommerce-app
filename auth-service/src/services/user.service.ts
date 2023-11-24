@@ -27,7 +27,6 @@ export class UserService {
         const user = await this.getUserByEmail(email);
 
         if (!user) {
-            console.log('User not found for email:', email);
             return null;
         }
 

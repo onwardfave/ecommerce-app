@@ -39,15 +39,17 @@ jobs:
 
     - name: Build and Push Docker Images
       run: |
-        docker build -t onwardfave/auth-service ./auth-service
-        docker build -t onwardfave/product-service ./product-service
-        docker build -t onwardfave/order-service ./order-service
-        docker build -t onwardfave/reverseproxy-service ./reverseproxy-service
+        VERSION_TAG=v0
 
-        docker push onwardfave/auth-service
-        docker push onwardfave/product-service
-        docker push onwardfave/order-service
-        docker push onwardfave/reverseproxy-service
+        docker build -t onwardfave/auth-service:${VERSION_TAG} ./auth-service
+        docker build -t onwardfave/product-service:${VERSION_TAG} ./product-service
+        docker build -t onwardfave/order-service:${VERSION_TAG} ./order-service
+        docker build -t onwardfave/reverseproxy-service:${VERSION_TAG} ./reverseproxy-service
+
+        docker push onwardfave/auth-service:${VERSION_TAG}
+        docker push onwardfave/product-service:${VERSION_TAG}
+        docker push onwardfave/order-service:${VERSION_TAG}
+        docker push onwardfave/reverseproxy-service:${VERSION_TAG}
 
     - name: Run Tests for Auth Service
       run: |

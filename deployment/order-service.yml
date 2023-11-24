@@ -31,23 +31,23 @@ spec:
           - name: DB_HOST
             valueFrom:
               configMapKeyRef:
-                name: db-config
-                key: host
+                name: ecommerce-config  # Name of your ConfigMap
+                key: DB_HOST
           - name: DB_USER
             valueFrom:
               secretKeyRef:
-                name: db-credentials
-                key: username
+                name: ecommerce-secret  # Name of your Secret
+                key: DB_USER
           - name: DB_PASS
             valueFrom:
               secretKeyRef:
-                name: db-credentials
-                key: password
+                name: ecommerce-secret  # Name of your Secret
+                key: DB_PASS
           - name: ORDERS_DB_NAME
             valueFrom:
               configMapKeyRef:
-                name: db-config
-                key: ordersDBName
+                name: ecommerce-config  # Name of your ConfigMap
+                key: ORDERS_DB_NAME
 ---
 apiVersion: v1
 kind: Service
