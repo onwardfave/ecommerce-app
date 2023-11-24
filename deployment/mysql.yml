@@ -28,7 +28,7 @@ spec:
       containers:
       - name: mysql
         image: docker.io/onwardfave/mysql  # Use your local image tag
-        imagePullPolicy: Always  # Use the local image if available
+        imagePullPolicy: IfNotPresent  # Use the local image if available
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
