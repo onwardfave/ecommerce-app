@@ -26,43 +26,43 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql
-        image: docker.io/onwardfave/mysql  # Use your local image tag
-        imagePullPolicy: IfNotPresent  # Use the local image if available
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: ecommerce-secret  # This should match the name of your Secret
-              key: DB_PASS  # This key should match the key in your Secret
-        - name: MYSQL_DATABASE
-          value: ecommerceDB  # This is not secret, so it's directly in the ConfigMap
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: ecommerce-secret
-              key: DB_USER  # The key in your Secret
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: ecommerce-secret
-              key: DB_PASS
-        ports:
-        - containerPort: 3306
-        volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "1Gi"
-          limits:
-            cpu: "1000m"
-            memory: "2Gi"
+        - name: mysql
+          image: mysql:5.7  # Using the official MySQL image
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_PASS
+            - name: MYSQL_DATABASE
+              value: "ecommerceDB"  # Direct value as it's not sensitive
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_PASS
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
       volumes:
-      - name: mysql-storage
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
 
 ---
 
