@@ -34,7 +34,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ecommerce-secret
-                  key: DB_PASS
+                  key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
               value: "ecommerceDB"  # Direct value as it's not sensitive
             - name: MYSQL_USER
