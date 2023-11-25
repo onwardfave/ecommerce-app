@@ -41,7 +41,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ecommerce-secret
-                  key: DB_USER
+                  key: ECOMMERCE_DB_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
