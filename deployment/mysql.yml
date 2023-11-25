@@ -37,16 +37,6 @@ spec:
                   key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
               value: "ecommerceDB"  # Direct value as it's not sensitive
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: ecommerce-secret
-                  key: ECOMMERCE_DB_USER
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ecommerce-secret
-                  key: DB_PASS
           ports:
             - containerPort: 3306
           volumeMounts:
