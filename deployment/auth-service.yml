@@ -19,7 +19,7 @@ spec:
         image: docker.io/onwardfave/auth-service:v0.1  # Use your local image tag
         imagePullPolicy: Always  # Use the local image if available
         ports:
-        - containerPort: 3000
+        - containerPort: 3001
         env:
         - name: DB_HOST
           valueFrom:
@@ -54,13 +54,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: auth-service
-  labels:
-    app: auth-service
 spec:
   selector:
     app: auth-service
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 3000
+    port: 8080
+    targetPort: 3001  # Changed to the new port
   type: ClusterIP

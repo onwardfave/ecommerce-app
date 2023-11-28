@@ -3,13 +3,13 @@ import { sequelize } from './models'; // Adjust the import path as needed
 import productRoutes from './routes/product.routes'; // Adjust the import path as needed
 
 const app = express();
-const PORT: string | number = process.env.PRODUCT_SERVICE_PORT || 3002;
+const PORT: number = process.env.PRODUCT_SERVICE_PORT ? parseInt(process.env.PRODUCT_SERVICE_PORT) : undefined || 3002;
 
 app.use(express.json());
 
 app.get('/api/v0', productRoutes);
 
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Product Service listening on port ${PORT}`);
     // Sync Sequelize models
     try {
