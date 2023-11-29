@@ -5,6 +5,7 @@ import productRoutes from './routes/product.routes'; // Adjust the import path a
 const app = express();
 const PORT: number = process.env.PRODUCT_SERVICE_PORT ? parseInt(process.env.PRODUCT_SERVICE_PORT) : undefined || 3002;
 
+console.log("Port number: ", PORT)
 app.use(express.json());
 
 app.get('/api/v0', productRoutes);

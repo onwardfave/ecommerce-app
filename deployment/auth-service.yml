@@ -5,7 +5,7 @@ metadata:
   labels:
     app: auth-service
 spec:
-  replicas: 2  # Example number of replicas
+  replicas: 2 # Adjust the number of replicas as needed
   selector:
     matchLabels:
       app: auth-service
@@ -18,37 +18,36 @@ spec:
       - name: auth-service
         image: docker.io/onwardfave/auth-service:v0.1  # Use your local image tag
         imagePullPolicy: Always  # Use the local image if available
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
         ports:
         - containerPort: 3001
         env:
-        - name: DB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: ecommerce-config  # Name of your ConfigMap
-              key: DB_HOST
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: ecommerce-secret  # Name of your Secret
-              key: DB_USER
-        - name: DB_PASS
-          valueFrom:
-            secretKeyRef:
-              name: ecommerce-secret  # Name of your Secret
-              key: DB_PASS
-        - name: AUTH_DB_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: ecommerce-config  # Name of your ConfigMap
-              key: AUTH_DB_NAME
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "200Mi"
-          limits:
-            cpu: "200m"
-            memory: "400Mi"
-
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: ecommerce-config  # Name of your ConfigMap
+                key: DB_HOST
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: ecommerce-secret  # Name of your Secret
+                key: DB_USER
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: ecommerce-secret  # Name of your Secret
+                key: DB_PASS
+          - name: AUTH_DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: ecommerce-config  # Name of your ConfigMap
+                key: AUTH_DB_NAME
 ---
 apiVersion: v1
 kind: Service
@@ -59,6 +58,6 @@ spec:
     app: auth-service
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 3001  # Changed to the new port
+    port: 8081
+    targetPort: 3001
   type: ClusterIP
