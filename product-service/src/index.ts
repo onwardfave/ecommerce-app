@@ -3,9 +3,14 @@ import { sequelize } from './models'; // Adjust the import path as needed
 import productRoutes from './routes/product.routes'; // Adjust the import path as needed
 
 const app = express();
-const PORT: number = process.env.PRODUCT_SERVICE_PORT ? parseInt(process.env.PRODUCT_SERVICE_PORT) : undefined || 3002;
+let PORT: number = process.env.PRODUCT_SERVICE_PORT ? parseInt(process.env.PRODUCT_SERVICE_PORT) : null || 3002;
 
 console.log("Port number: ", PORT)
+
+if (PORT == null) {
+    PORT = 3002;
+}
+
 app.use(express.json());
 
 app.get('/api/v0', productRoutes);
