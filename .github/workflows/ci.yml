@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-push:
@@ -26,48 +26,46 @@ jobs:
           --health-retries=10
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker Images
-      run: |
-        VERSION_TAG=v0.1
+      - name: Build and Push Docker Images
+        run: |
+          VERSION_TAG=v0.2
 
-        docker build -t onwardfave/auth-service:${VERSION_TAG} ./auth-service
-        docker build -t onwardfave/product-service:${VERSION_TAG} ./product-service
-        docker build -t onwardfave/order-service:${VERSION_TAG} ./order-service
-        docker build -t onwardfave/reverseproxy-service:${VERSION_TAG} ./reverseproxy-service  
-
-
-        docker push onwardfave/auth-service:${VERSION_TAG}
-        docker push onwardfave/product-service:${VERSION_TAG}
-        docker push onwardfave/order-service:${VERSION_TAG}
-        docker push onwardfave/reverseproxy-service:${VERSION_TAG}
-
-    - name: Run Tests for Auth Service
-      run: |
-        cd auth-service
-        npm install
-        npm run test
-
-    - name: Run Tests for Product Service
-      run: |
-        cd product-service
-        npm install
-        npm run test
-
-    - name: Run Tests for Order Service
-      run: |
-        cd order-service
-        npm install
-        npm run test
+          docker build -t onwardfave/auth-service:${VERSION_TAG} ./auth-service
+          docker build -t onwardfave/product-service:${VERSION_TAG} ./product-service
+          docker build -t onwardfave/order-service:${VERSION_TAG} ./order-service
+          docker build -t onwardfave/reverseproxy-service:${VERSION_TAG} ./reverseproxy-service  
 
 
+          docker push onwardfave/auth-service:${VERSION_TAG}
+          docker push onwardfave/product-service:${VERSION_TAG}
+          docker push onwardfave/order-service:${VERSION_TAG}
+          docker push onwardfave/reverseproxy-service:${VERSION_TAG}
+
+      - name: Run Tests for Auth Service
+        run: |
+          cd auth-service
+          npm install
+          npm run test
+
+      - name: Run Tests for Product Service
+        run: |
+          cd product-service
+          npm install
+          npm run test
+
+      - name: Run Tests for Order Service
+        run: |
+          cd order-service
+          npm install
+          npm run test

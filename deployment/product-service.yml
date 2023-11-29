@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: product-service
-        image: docker.io/onwardfave/product-service:v0.1  # Use your local image tag
-        imagePullPolicy: Always  # Use the local image if available
+        image: docker.io/onwardfave/product-service:v0.2  # Use your local image tag
+        imagePullPolicy: Always  # Always pull from the 
         resources:
           requests:
             cpu: "250m"
@@ -58,6 +58,6 @@ spec:
     app: product-service
   ports:
   - protocol: TCP
-    port: 8080
+    port: 80
     targetPort: 3002
   type: ClusterIP

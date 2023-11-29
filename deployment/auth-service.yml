@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: docker.io/onwardfave/auth-service:v0.1  # Use your local image tag
+        image: docker.io/onwardfave/auth-service:v0.2  # Use your local image tag
         imagePullPolicy: Always  # Use the local image if available
         resources:
           requests:
@@ -58,6 +58,6 @@ spec:
     app: auth-service
   ports:
   - protocol: TCP
-    port: 8081
+    port: 80
     targetPort: 3001
   type: ClusterIP
