@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.get('/api/v0', productRoutes);
 
-app.listen(PORT, '0.0.0.0', async () => {
+app.listen(3002, '0.0.0.0', async () => {
     console.log(`Product Service listening on port ${PORT}`);
     // Sync Sequelize models
     try {
