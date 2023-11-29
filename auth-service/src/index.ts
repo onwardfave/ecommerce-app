@@ -12,7 +12,7 @@ app.get('/api/v0/auth', (req: Request, res: Response) => {
 
 app.use('/api/v0', authRoutes)
 
-app.listen(PORT, async () => {
+app.listen(3001, '0.0.0.0', async () => {
     console.log(`Auth Service listening on port ${PORT}`);
     // Sync Sequelize models
     try {

@@ -17,7 +17,7 @@ spec:
       containers:
       - name: auth-service
         image: docker.io/onwardfave/auth-service:v0.2  # Use your local image tag
-        imagePullPolicy: Always  # Use the local image if available
+        imagePullPolicy: Always 
         resources:
           requests:
             cpu: "250m"
