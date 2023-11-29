@@ -10,7 +10,7 @@ app.get('/api/v0/orders', (req: Request, res: Response) => {
     res.send('Order Service is running...');
 });
 
-app.listen(PORT, async () => {
+app.listen(3003, '0.0.0.0', async () => {
     console.log(`Order Service listening on port ${PORT}`);
     // Sync Sequelize models
     try {
