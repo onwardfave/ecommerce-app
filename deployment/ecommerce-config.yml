@@ -16,7 +16,7 @@ data:
   AUTH_SERVICE_PORT: "3001"
   PRODUCT_SERVICE_PORT: "3002"
   ORDERS_SERVICE_PORT: "3003"
-  ECOMMERCE_DB_USER: "ecommerce_db_user"
+  ECOMMERCE_APP_USER: "ecommerceappuser"
   PRODUCT_SERVICE_BASE_URL: "http://www.localhost/api/v0/"
   USER_SERVICE_BASE_URL: "http://www.localhost/api/v0/auth"
   ORDER_SERVICE_BASE_URL: "http://www.localhost/api/v0/"
