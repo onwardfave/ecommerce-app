@@ -9,8 +9,6 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    services:
-
 
     steps:
       - uses: actions/checkout@v2
