@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: ecommerce-config
 data:
-  DB_HOST: "mysql"
+  DB_HOST: "192.168.1.66"
   DB_PORT: "3306"
   DB_NAME: "ecommerceDB"
   AUTH_DB_NAME: "authDB"
