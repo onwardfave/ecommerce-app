@@ -10,3 +10,14 @@ docker system prune
 to clean up unused objects
 ===============================================
 docker image prune 
+
+Kubernetes Commands
+===================================================
+1. create database init configmap:
+
+kubectl create configmap mysql-init-db --from-file=sql-scripts\init-db.sql
+
+
+Listenting on local host after set up:
+=======================================================
+kubectl port-forward service/reverseproxy-service 8080:80

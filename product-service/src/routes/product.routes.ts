@@ -1,5 +1,5 @@
-// product.routes.ts
 import express from 'express';
+import { requireAuth } from '../middleware/auth.middleware'; // Adjust the import path as necessary
 import {
     createProduct,
     getAllProducts,
@@ -10,10 +10,13 @@ import {
 
 const router = express.Router();
 
-router.post('/products', createProduct);
-router.get('/products', getAllProducts);
-router.get('/products/:id', getProduct);
-router.put('/products/:id', updateProduct);
-router.delete('/products/:id', deleteProduct);
+// Applying authMiddleware to protected routes
+router.post('/', requireAuth, createProduct);
+router.put('/:id', requireAuth, updateProduct);
+router.delete('/:id', requireAuth, deleteProduct);
+
+// Publicly accessible routes
+router.get('/', getAllProducts);
+router.get('/:id', getProduct);
 
 export default router;
