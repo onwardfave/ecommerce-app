@@ -8,7 +8,7 @@ const PORT: string | number = process.env.ORDERS_SERVICE_PORT || 3002;
 
 app.use(express.json());
 
-app.get('/api/v0', productRoutes);
+app.use('/api/v0/products', productRoutes);
 
 app.listen(PORT, async () => {
     console.log(`Product Service listening on port ${PORT}`);

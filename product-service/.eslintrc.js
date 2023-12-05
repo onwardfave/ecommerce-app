@@ -18,5 +18,13 @@ module.exports = {
     rules: {
       // Customize your rules
     },
+    overrides: [
+      {
+          files: ["**/*.test.ts", '*.spec.ts'],
+          rules: {
+              // Disable specific rules for test files
+          }
+      }
+    ]
   };
   
