@@ -9,7 +9,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest"],
   },
   
   "include": ["src/**/*", "test/**.ts"],
