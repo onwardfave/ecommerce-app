@@ -21,7 +21,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
         await jwt.verify(tokenBearer[1], c.config.jwt.secret);
         return next();
     } catch (err) {
-        return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+        return res.status(401).send({ auth: false, message: 'Failed to authenticate.' });
     }
 
 }

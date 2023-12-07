@@ -9,6 +9,10 @@ export class OrderService {
         const user = await fetchUserById(orderData.userId);
         const product = await fetchProductById(orderData.productId);
 
+        console.log("Fetched user at create order, ", JSON.stringify(user))
+        console.log("Fetched product at create order, ", JSON.stringify(product))
+
+
         if (!user || !product) {
             throw new Error('User or Product not found');
         }

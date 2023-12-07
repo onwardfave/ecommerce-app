@@ -4,6 +4,19 @@ import { sendError, sendSuccess } from '../utils/response.utils'; // Assuming yo
 import jwt from 'jsonwebtoken';
 
 
+
+/**
+     * Handles an HTTP request and response.
+     * Returns a JSON response with a message indicating that the authentication service is running okay.
+     * 
+     * @param req - The HTTP request object containing information about the incoming request.
+     * @param res - The HTTP response object used to send a response back to the client.
+*/
+export const baseAuth = async (req: Request, res: Response) => {
+    res.status(200).json({ message: "Auth service is running okay" })
+}
+
+
 export const register = async (req: Request, res: Response) => {
     try {
         const user = await UserService.createUser(req.body);
@@ -42,6 +55,14 @@ export const login = async (req: Request, res: Response) => {
 };
 
 
+/**
+    * Refreshes the access token using the provided refresh token.
+    * 
+    * @param req - The request object containing the refresh token in the request body.
+    * @param res - The response object used to send the new access and refresh tokens.
+    * @returns A Promise that resolves to the new access and refresh tokens.
+   */
+
 export const refreshToken = async (req: Request, res: Response) => {
     const { refreshToken } = req.body;
 
@@ -65,3 +86,29 @@ export const refreshToken = async (req: Request, res: Response) => {
         return sendError(res, 'Invalid or expired refresh token', 401);
     }
 };
+
+/**
+ * Fetches a user for a user with the given userID
+ * @param req The request object containing information about the fetch user request.
+ * @param res The response object used to send a response back to the client.
+ */
+
+export const getUserByID = async (req: Request, res: Response) => {
+    const userID = req.params.userID;
+    if (!userID) {
+        return sendError(res, 'Invalid userID');
+    }
+
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return sendError(res, 'Unauthorized', 401);
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'secret');
+        const user = await UserService.getUserByID(userID);
+        sendSuccess(res, user);
+    } catch (error: any) {
+        sendError(res, error.message);
+    }
+}

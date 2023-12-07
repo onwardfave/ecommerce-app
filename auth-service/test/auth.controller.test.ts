@@ -143,7 +143,6 @@ describe('AuthController', () => {
     expect(response.status).toBe(401);
     expect(response.body.error).toBe(undefined);
   });
-
 });
 
 

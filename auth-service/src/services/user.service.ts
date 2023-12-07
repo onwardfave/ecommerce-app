@@ -26,11 +26,15 @@ export class UserService {
 
         const user = await this.getUserByEmail(email);
 
+        console.log("User,", JSON.stringify(user));
+
         if (!user) {
             return null;
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        console.log("Is password valid, ", isPasswordValid)
 
         return isPasswordValid ? user : null;
     }
@@ -59,6 +63,17 @@ export class UserService {
         // Optionally, save refreshToken to the database for the user
 
         return { accessToken, refreshToken };
+    }
+
+    static async getUserByID(userID: string): Promise<User | null> {
+        try {
+            const user = await User.findOne({ where: { 'id': userID } });
+
+            return user || null;
+        } catch (error: any) {
+            console.error(`Failed to retrieve user by email: ${error.message}`);
+            throw new Error(`Failed to retrieve user by email: ${error.message}`);
+        }
     }
 
 }

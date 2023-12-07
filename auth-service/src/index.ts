@@ -6,11 +6,7 @@ const PORT: string | number = process.env.AUTH_SERVICE_PORT || 3001;
 
 app.use(express.json());
 
-app.get('/api/v0/auth', (req: Request, res: Response) => {
-    res.send('Auth Service is running...');
-});
-
-app.use('/api/v0', authRoutes)
+app.use('/api/v0/auth', authRoutes)
 
 app.listen(PORT, async () => {
     console.log(`Auth Service listening on port ${PORT}`);
