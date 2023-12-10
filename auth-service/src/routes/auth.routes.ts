@@ -1,24 +1,23 @@
 import express, { Request, Response } from 'express';
-import { register, login, refreshToken, baseAuth } from '../controllers/auth.controller';
+import { register, login, refreshToken, baseAuth, getUserByID } from '../controllers/auth.controller';
+const router = express.Router();
 
-const app = express();
-
-app.use(express.json()); // Body parser middleware for JSON request bodies
+router.use(express.json()); // Body parser middleware for JSON request bodies
 
 //base route
-app.get('/', baseAuth)
+router.get('/', baseAuth)
 
 // Registration route
-app.post('/register', register);
+router.post('/register', register);
 
 // Login route
-app.post('/login', login);
+router.post('/login', login);
 
 // Token refresh route
-app.post('/refresh', refreshToken);
+router.post('/refresh', refreshToken);
 
 //get user with ID
-app.get('/users/:userID', getUserByID)
+router.get('/users/:userID', getUserByID)
 
 // ... additional routes as necessary
-export default app;
+export default router;

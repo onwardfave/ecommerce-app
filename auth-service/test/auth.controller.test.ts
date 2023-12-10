@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/routes/auth.routes'; // Import the routes directly for testing
+import app from '../src/app'; // Import the routes directly for testing
 import { Sequelize } from 'sequelize-typescript';
 import { User } from '../src/models/user.model';
 import jwt from 'jsonwebtoken'
@@ -26,6 +26,8 @@ describe('AuthController', () => {
     const response = await request(app)
       .post('/api/v0/auth/register')
       .send({ username: 'newuser', email: 'newuser@example.com', password: 'password123' });
+
+    //console.log("Response at create user: ", JSON.stringify(response))
 
     expect(response.status).toBe(201);
     expect(response.body.username).toBe('newuser');

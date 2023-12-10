@@ -26,7 +26,7 @@ export class UserService {
 
         const user = await this.getUserByEmail(email);
 
-        console.log("User,", JSON.stringify(user));
+        //console.log("User,", JSON.stringify(user));
 
         if (!user) {
             return null;
@@ -34,7 +34,7 @@ export class UserService {
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
-        console.log("Is password valid, ", isPasswordValid)
+        //console.log("Is password valid, ", isPasswordValid)
 
         return isPasswordValid ? user : null;
     }
