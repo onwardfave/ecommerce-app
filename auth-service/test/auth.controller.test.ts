@@ -83,24 +83,29 @@ describe('AuthController', () => {
       .send({ refreshToken: expiredToken });
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBeUndefined();
+    expect(response.body.error).toBeDefined();
+    expect(response.body.error.message).toBe('Invalid or expired refresh token');
   });
 
   // Tests the case where a user tries to register with an email that is already registered.
   test('register user with existing email (Recommended Fix)', async () => {
+    // First registration
     const response1 = await request(app)
       .post('/api/v0/auth/register')
       .send({ username: 'existinguser', email: 'existinguser@example.com', password: 'password123' });
-
     expect(response1.status).toBe(201);
 
+    // Second registration with the same email
     const response2 = await request(app)
       .post('/api/v0/auth/register')
       .send({ username: 'newuser', email: 'existinguser@example.com', password: 'password123' });
 
-    expect(response2.status).toBe(400);
-    expect(response2.body.error).toBeUndefined();
+    // Assertions
+    expect(response2.status).toBe(400); // Status code for bad request
+    expect(response2.body.message).toBeDefined(); // Check if the message field is defined
+    expect(response2.body.message).toBe('Validation error'); // Check if the message is as expected
   });
+
 
   // Tests the case where the user enters an incorrect email while trying to login.
   test('login user with incorrect email', async () => {
@@ -109,7 +114,8 @@ describe('AuthController', () => {
       .send({ email: 'incorrectemail@example.com', password: 'password123' });
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBeUndefined();
+    expect(response.body.error).toBeDefined();
+    expect(response.body.error.message).toBe('Invalid username or password.');
   });
 
   // Tests the case where an invalid refresh token is provided while trying to refresh the token.
@@ -121,11 +127,12 @@ describe('AuthController', () => {
       .send({ refreshToken: invalidToken });
 
     expect(response.status).toBe(401);
-    // Change from response.body.error to response.body.message
-    expect(response.body.message).toBeDefined();
-    // Optionally, check the specific message content
-    expect(response.body.message).toBe('Invalid or expired refresh token');
+
+    // Check if the message field is defined and matches the expected error message
+    expect(response.text).toBeDefined();
+    expect(response.body.error.message).toBe('Invalid or expired refresh token');
   });
+
 
 
   // Tests the case where the user tries to register without providing an email.
@@ -143,7 +150,8 @@ describe('AuthController', () => {
       .send({ refreshToken: 'invalid_token' });
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBe(undefined);
+    expect(response.body.error).toBeDefined();
+    expect(response.body.error.message).toBe('Invalid or expired refresh token');
   });
 
   //Add authorization headers to this request
