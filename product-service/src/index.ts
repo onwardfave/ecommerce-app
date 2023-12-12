@@ -1,19 +1,7 @@
 import express, { Request, Response } from 'express';
-import { sequelize } from './models'; // Adjust the import path as needed
-import productRoutes from './routes/product.routes'; // Adjust the import path as needed
-
-interface UserBasicInfo {
-    id: number;
-    role: string
-}
-
-declare global {
-    namespace Express {
-        interface Request {
-            user?: UserBasicInfo | null;
-        }
-    }
-}
+import { sequelize } from './models';
+import productRoutes from './routes/product.routes';
+import { } from './types/user'
 
 const app = express();
 
