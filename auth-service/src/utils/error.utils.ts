@@ -1,7 +1,20 @@
-// errorUtils.ts
-export class ValidationError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'ValidationError';
+import BaseError from './baseError.utils';
+
+export class ValidationError extends BaseError {
+    constructor(description: string) {
+        super('ValidationError', 400, true, description);
+    }
+}
+
+
+export class AuthenticationError extends BaseError {
+    constructor(description: string) {
+        super('AuthenticationError', 401, true, description);
+    }
+}
+
+export class DatabaseError extends BaseError {
+    constructor(description: string, details?: any) {
+        super('DatabaseError', 500, true, description, details);
     }
 }

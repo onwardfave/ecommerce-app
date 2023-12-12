@@ -1,6 +1,17 @@
-// logger.ts
-import winston from 'winston';
+// src/utils/logger.ts
 
-export const logger = winston.createLogger({
-    // winston logger configuration
+import * as winston from 'winston';
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.Console(),
+        // Add other transports as needed, e.g., file transport
+    ],
 });
+
+export default logger;

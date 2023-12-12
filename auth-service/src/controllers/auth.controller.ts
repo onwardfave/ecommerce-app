@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { UserService } from '../services/user.service';
+import { ValidationError, AuthenticationError, DatabaseError } from '../utils/error.utils';
 import { sendError, sendSuccess } from '../utils/response.utils'; // Assuming you have these functions
 import jwt from 'jsonwebtoken';
+
 
 
 /**
@@ -20,9 +22,10 @@ export const baseAuth = async (req: Request, res: Response) => {
 export const register = async (req: Request, res: Response) => {
     try {
         const user = await UserService.createUser(req.body);
+        console.log('User in Controller:', user); // Log to verify the received user
         return res.status(201).json(user);
     } catch (error: any) {
-        // Error handling to be improved
+        console.error('Error in Controller:', error); // Log any errors
         return res.status(400).json({ message: error.message });
     }
 };
@@ -32,7 +35,7 @@ export const register = async (req: Request, res: Response) => {
  * @param req The request object containing information about the login request.
  * @param res The response object used to send a response back to the client.
  */
-export const login = async (req: Request, res: Response) => {
+export const login1 = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
@@ -53,6 +56,26 @@ export const login = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Login failed:', error);
         return sendError(res, 'Login failed due to an internal error.', 500);
+    }
+};
+
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            throw new ValidationError('Username and password are required.');
+        }
+
+        const user = await UserService.validateUser(email, password);
+        if (!user) {
+            throw new AuthenticationError('Invalid username or password.');
+        }
+
+        const tokens = UserService.generateTokens(user.id.toString(), user.role);
+        res.status(200).json({ tokens, message: 'Login successful.' });
+    } catch (error) {
+        next(error); // Pass the error to the error-handling middleware
     }
 };
 

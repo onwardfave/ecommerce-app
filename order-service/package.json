@@ -38,7 +38,8 @@
         "jsonwebtoken": "^8.5.1",
         "mysql2": "^2.2.5",
         "sequelize": "^6.35.0",
-        "sequelize-typescript": "^2.1.5"
+        "sequelize-typescript": "^2.1.5",
+        "winston": "^3.11.0"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",
@@ -47,6 +48,7 @@
         "@types/mocha": "^10.0.6",
         "@types/node": "^20.9.1",
         "@types/sequelize": "^4.28.18",
+        "@types/winston": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^6.11.0",
         "@typescript-eslint/parser": "^6.11.0",
         "eslint": "^8.53.0",

@@ -21,7 +21,11 @@ export class UserService {
         userDataCopy.password = hashedPassword;
 
         // Create and return new user
-        return User.create(userDataCopy);
+        let user = await User.create(userDataCopy);
+
+        console.log("Created User:", JSON.stringify(user))
+
+        return user;
     }
 
 
