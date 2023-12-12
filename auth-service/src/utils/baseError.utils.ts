@@ -12,6 +12,8 @@ export default class BaseError extends Error {
         this.statusCode = statusCode;
         this.isOperational = isOperational;
         this.details = details;
-        Error.captureStackTrace(this);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor);
+        }
     }
 }

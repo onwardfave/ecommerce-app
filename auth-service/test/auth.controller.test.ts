@@ -67,8 +67,13 @@ describe('AuthController', () => {
       .post('/api/v0/auth/register')
       .send({ email: 'newuser@example.com', password: 'password123' });
 
+    console.log("Response at register user without username: ", JSON.stringify(response))
     expect(response.status).toBe(400);
+    // Adjusted to match the actual error message structure
+    expect(response.body.message).toBe("notNull Violation: User.username cannot be null");
   });
+
+
 
   // Tests the case where the user enters an incorrect password while trying to login. The test expects the response status to be 401.
   test('login user with incorrect password (Recommended Fix)', async () => {

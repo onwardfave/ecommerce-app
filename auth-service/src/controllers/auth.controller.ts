@@ -21,18 +21,12 @@ export const baseAuth = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
 
-    const { email, password, username } = req.body;
-
-    if (!email || !password || !username) {
-        throw new ValidationError('Username, Email, and password are required.');
-    }
-
     try {
         const user = await UserService.createUser(req.body);
-        console.log('User in Controller:', user); // Log to verify the received user
+        //console.log('User in Controller:', user); // Log to verify the received user
         return res.status(201).json(user);
     } catch (error: any) {
-        console.error('Error in Controller:', error); // Log any errors
+        //console.error('Error in Controller:', error); // Log any errors
         return res.status(400).json({ message: error.message });
     }
 
