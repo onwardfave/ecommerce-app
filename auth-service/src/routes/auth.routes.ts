@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { register, login, refreshToken, baseAuth, getUserByID } from '../controllers/auth.controller';
+import { requireAuth } from '../middleware/auth.middleware';
 const router = express.Router();
 
 router.use(express.json()); // Body parser middleware for JSON request bodies
@@ -17,7 +18,7 @@ router.post('/login', login);
 router.post('/refresh', refreshToken);
 
 //get user with ID
-router.get('/users/:userID', getUserByID)
+router.get('/users/:userID', requireAuth, getUserByID)
 
 // ... additional routes as necessary
 export default router;

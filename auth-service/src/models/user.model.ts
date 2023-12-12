@@ -41,6 +41,13 @@ class User extends Model {
   })
   updatedAt!: Date;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    defaultValue: 'user' // Default role is 'user'
+  })
+  role!: string;
+
 }
 
 export { User };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { requireAuth } from '../middleware/auth.middleware'; // Adjust the import path as necessary
+import { requireAuth, authorizeAdmin } from '../middleware/auth.middleware'; // Adjust the import path as necessary
 import {
     createProduct,
     getAllProducts,
@@ -11,9 +11,9 @@ import {
 const router = express.Router();
 
 // Applying authMiddleware to protected routes
-router.post('/', requireAuth, createProduct);
-router.put('/:id', requireAuth, updateProduct);
-router.delete('/:id', requireAuth, deleteProduct);
+router.post('/', authorizeAdmin, createProduct);
+router.put('/:id', authorizeAdmin, updateProduct);
+router.delete('/:id', authorizeAdmin, deleteProduct);
 
 // Publicly accessible routes
 router.get('/', getAllProducts);

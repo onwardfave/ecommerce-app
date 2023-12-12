@@ -13,7 +13,9 @@
     "rootDir": "./src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "paths": {      // Optional
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "moduleResolution": "node",
+    "paths": {      // Optiona
       "*": ["node_modules/*", "src/types/*"]
     }
   },

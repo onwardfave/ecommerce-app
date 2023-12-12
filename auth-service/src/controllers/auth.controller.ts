@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
+
 import { UserService } from '../services/user.service';
 import { sendError, sendSuccess } from '../utils/response.utils'; // Assuming you have these functions
 import jwt from 'jsonwebtoken';
-
 
 
 /**
@@ -34,7 +34,6 @@ export const register = async (req: Request, res: Response) => {
  */
 export const login = async (req: Request, res: Response) => {
     try {
-
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -46,13 +45,17 @@ export const login = async (req: Request, res: Response) => {
             return sendError(res, 'Invalid username or password.', 401);
         }
 
-        const { accessToken, refreshToken } = UserService.generateTokens(user.id.toString());
+        // Assuming 'user' object has a 'roles' field that is an array of role names
+        const role = user.role; // Replace with actual method to get roles
+
+        const { accessToken, refreshToken } = UserService.generateTokens(user.id.toString(), role);
         return sendSuccess(res, { accessToken, refreshToken }, 'Login successful.');
     } catch (error) {
         console.error('Login failed:', error);
         return sendError(res, 'Login failed due to an internal error.', 500);
     }
 };
+
 
 
 /**
@@ -74,10 +77,19 @@ export const refreshToken = async (req: Request, res: Response) => {
         // Verify the refresh token
         const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET!) as jwt.JwtPayload;
 
-        // Check if the decoded token has an id property
         if (typeof decoded === 'object' && 'id' in decoded) {
-            // Generate a new access token
-            const newAccessToken = UserService.generateTokens(decoded.id).accessToken;
+            // Fetch the latest roles of the user from the database
+            const user = await UserService.getUserByID(decoded.id);
+            if (!user) {
+                return sendError(res, 'User not found', 401);
+            }
+
+            // Assuming user.roles is an array of roles
+            const roles = user.role || '';
+
+            // Generate a new access token with the latest roles
+            const newAccessToken = UserService.generateTokens(decoded.id, roles).accessToken;
+
             return sendSuccess(res, { accessToken: newAccessToken }, 'Token refreshed successfully');
         } else {
             return sendError(res, 'Invalid token structure', 401);
@@ -87,6 +99,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     }
 };
 
+
 /**
  * Fetches a user for a user with the given userID
  * @param req The request object containing information about the fetch user request.
@@ -95,9 +108,16 @@ export const refreshToken = async (req: Request, res: Response) => {
 
 export const getUserByID = async (req: Request, res: Response) => {
     const userID = req.params.userID;
+    //const loggedInUserId = req.user.id; // Adjust depending on how the user ID is stored in the token
+
     if (!userID) {
         return sendError(res, 'Invalid userID');
     }
+
+    // Check if the requested user ID matches the logged-in user's ID
+    /*if (requestedUserId !== loggedInUserId) {
+        return res.status(403).json({ message: "Forbidden: You can only access your own details." });
+    }*/
 
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {

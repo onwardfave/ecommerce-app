@@ -13,6 +13,7 @@
     "rootDir": "./src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {      // Optional
       "*": ["node_modules/*", "src/types/*"]
     }

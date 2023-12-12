@@ -36,4 +36,12 @@ export class Product extends Model {
     })
     version!: number;
 
+    // New Column for Inventory Count
+    @Column({
+        type: DataType.INTEGER,
+        defaultValue: 0, // Default inventory count starts at 0
+        allowNull: false,
+    })
+    inventoryCount!: number;
+
 }

@@ -4,8 +4,17 @@ import { OrderService } from '../services/order.service';
 
 export class OrderController {
     static async createOrder(req: Request, res: Response): Promise<void> {
+        const userId = req.user?.id;
+
+        // Extract the authorization header from the incoming request
+        const authHeader = req.headers.authorization;
+
         try {
-            const order = await OrderService.createOrder(req.body);
+            const orderData = {
+                ...req.body,
+                userId: userId
+            };
+            const order = await OrderService.createOrder(orderData, authHeader);
             res.status(201).json(order);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
@@ -14,8 +23,13 @@ export class OrderController {
 
     static async getOrderById(req: Request, res: Response): Promise<void> {
         try {
+
             const orderId = parseInt(req.params.id, 10);
-            const order = await OrderService.getOrderById(orderId);
+            const userId = req.user!.id;
+
+            console.log("User and order IDs: ", userId, orderId);
+
+            const order = await OrderService.getOrderById(userId, orderId);
 
             if (!order) {
                 res.status(404).send('Order not found');

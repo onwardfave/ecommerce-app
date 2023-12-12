@@ -11,6 +11,16 @@ to clean up unused objects
 ===============================================
 docker image prune 
 
+
+Remove any stopped containers and all unused images (not just dangling images), add the -a flag to the command:
+===============================================
+docker system prune -a
+
+Clean Up After Docker compose
+================================================
+docker-compose down --volumes
+
+
 Kubernetes Commands
 ===================================================
 1. create database init configmap:

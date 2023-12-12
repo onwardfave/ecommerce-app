@@ -145,6 +145,28 @@ describe('AuthController', () => {
     expect(response.status).toBe(401);
     expect(response.body.error).toBe(undefined);
   });
+
+  //Add authorization headers to this request
+  /*
+  test('Get user by ID', async () => {
+
+    const response1 = await request(app)
+      .post('/api/v0/auth/register')
+      .send({ username: 'newuser', email: 'thenewuser@example.com', password: 'password123' });
+
+    console.log("Response 1: ", JSON.stringify(response1))
+    console.log("Created user ID: ", JSON.parse(response1.text)?.id)
+
+    expect(response1.status).toBe(201);
+
+    const response = await request(app)
+      .get(`/api/v0/auth/users/${JSON.parse(response1.text)?.id}`);
+    console.log("Response: ", JSON.stringify(response));
+
+    expect(response.status).toBe(200);
+  })*/
+
+
 });
 
 

@@ -2,6 +2,20 @@ import express, { Request, Response } from 'express';
 import { sequelize } from './models';
 import orderRoutes from './routes/order.routes';
 
+// types/express
+interface UserBasicInfo {
+    id: number;
+    role: string
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: UserBasicInfo | null;
+        }
+    }
+}
+
 const app = express();
 const PORT: string | number = process.env.ORDERS_SERVICE_PORT || 3003;
 

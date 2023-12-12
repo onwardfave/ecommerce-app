@@ -18,9 +18,9 @@ export class Order extends Model {
     @Column(DataType.INTEGER.UNSIGNED)
     productId!: number;
 
+    @Column(DataType.INTEGER.UNSIGNED)
+    quantity!: number;
+
     @Column(DataType.DECIMAL(10, 2))
     total!: number;
-
-    @Column(DataType.DATE)
-    orderDate!: Date;
 }

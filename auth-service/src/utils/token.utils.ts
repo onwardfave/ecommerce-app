@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const generateToken = (userId: string, type: 'access' | 'refresh'): string => {
+export const generateToken = (userId: string, role: string, type: 'access' | 'refresh'): string => {
     if (!process.env.JWT_SECRET) {
         throw new Error('JWT_SECRET is not defined');
     }
@@ -10,5 +10,13 @@ export const generateToken = (userId: string, type: 'access' | 'refresh'): strin
         expiresIn = '7d'; // Longer expiration for refresh tokens
     }
 
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn });
+    // Include user roles in the token payload
+    const payload = {
+        id: userId,
+        role: role,
+        type: type
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
 };
+
