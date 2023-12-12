@@ -34,6 +34,9 @@ describe('OrderController', () => {
 
         it('should create an order and return 201 status', async () => {
             mockRequest.body = mockOrderData;
+            mockRequest.headers = { authorization: 'Bearer mock-token' }; // Set the mock authorization header
+            mockRequest.user = { id: 1, role: 'mock-role' }; // Mock user object with required properties
+
             OrderService.createOrder = jest.fn().mockResolvedValue(mockOrderResponse);
 
             await OrderController.createOrder(mockRequest as Request, mockResponse as Response);
@@ -42,8 +45,12 @@ describe('OrderController', () => {
             expect(responseJson).toHaveBeenCalledWith(mockOrderResponse);
         });
 
+
         it('should handle errors and return 400 status', async () => {
             mockRequest.body = mockOrderData;
+            mockRequest.headers = { authorization: 'Bearer mock-token' }; // Set the mock authorization header
+            mockRequest.user = { id: 1, role: 'mock-role' }; // Mock user object with required properties
+
             OrderService.createOrder = jest.fn().mockRejectedValue(new Error('Failed to create order'));
 
             await OrderController.createOrder(mockRequest as Request, mockResponse as Response);
@@ -51,6 +58,7 @@ describe('OrderController', () => {
             expect(mockResponse.status).toHaveBeenCalledWith(400);
             expect(responseJson).toHaveBeenCalledWith({ error: 'Failed to create order' });
         });
+
     });
 
     describe('getOrderById', () => {
@@ -62,6 +70,11 @@ describe('OrderController', () => {
             total: 150.00,
             orderDate: new Date()
         };
+
+        beforeEach(() => {
+            // Mock user object for each test
+            mockRequest.user = { id: 1, role: 'mock-role' };
+        });
 
         it('should retrieve an order and return it', async () => {
             mockRequest.params = { id: orderId.toString() };
@@ -92,4 +105,5 @@ describe('OrderController', () => {
             expect(responseJson).toHaveBeenCalledWith({ error: 'Internal server error' });
         });
     });
+
 });

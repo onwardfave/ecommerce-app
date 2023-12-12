@@ -33,76 +33,46 @@ describe('Order Service', () => {
     });
 
     test('create order successfully', async () => {
-        // Cast to jest.Mock to provide access to mockResolvedValue
-        (fetchUserById as jest.Mock).mockResolvedValue({ id: 1, name: 'John Doe' });
         (fetchProductById as jest.Mock).mockResolvedValue({ id: 1, name: 'Widget', price: 10.00 });
 
         const orderData = { userId: 1, productId: 1, quantity: 2 };
-        const order = await OrderService.createOrder(orderData);
+        const order = await OrderService.createOrder(orderData, {});
 
-        expect(fetchUserById).toHaveBeenCalledWith(1);
         expect(fetchProductById).toHaveBeenCalledWith(1);
         expect(order).toBeDefined();
         expect(order.total).toBe(20.00); // quantity 2 * price 10.00
     });
 
-    // Creates an order successfully with invalid user ID
 
-
-    test('create order successfully with invalid user ID', async () => {
-        // Cast to jest.Mock to provide access to mockResolvedValue
-        (fetchUserById as jest.Mock).mockResolvedValue(null);
-        (fetchProductById as jest.Mock).mockResolvedValue({ id: 1, name: 'Widget', price: 10.00 });
-
-        const orderData = { userId: 999, productId: 1, quantity: 2 };
-        await expect(OrderService.createOrder(orderData)).rejects.toThrow('User or Product not found');
-
-        expect(fetchUserById).toHaveBeenCalledWith(999);
-        expect(fetchProductById).toHaveBeenCalledWith(1);
-    });
-
-    // Creates an order successfully with invalid product ID
-
-
-    test('create order successfully with invalid product ID', async () => {
-        // Mock the user fetch function to return a valid user
-        (fetchUserById as jest.Mock).mockResolvedValue({ id: 1, name: 'John Doe' });
-
-        // Mock the product fetch function to return null (invalid product ID)
+    test('create order with invalid product ID', async () => {
         (fetchProductById as jest.Mock).mockResolvedValue(null);
 
         const orderData = { userId: 1, productId: 999, quantity: 2 };
-        await expect(OrderService.createOrder(orderData)).rejects.toThrow('User or Product not found');
+        await expect(OrderService.createOrder(orderData, {})).rejects.toThrow('Product not found');
 
-        expect(fetchUserById).toHaveBeenCalledWith(1);
         expect(fetchProductById).toHaveBeenCalledWith(999);
     });
 
 
-    // Returns null when getting an order by invalid ID
-
 
     test('returns null when getting an order by invalid ID', async () => {
         const invalidOrderId = 999;
-        const order = await OrderService.getOrderById(invalidOrderId);
+        const order = await OrderService.getOrderById(1, invalidOrderId);
 
         expect(order).toBeNull();
     });
 
 
     // Throws an error when user is not found during order creation
-    test('throws an error when user is not found during order creation', async () => {
-        // Mock the user fetch function to return null (invalid user ID)
-        (fetchUserById as jest.Mock).mockResolvedValue(null);
+    test('throws an error when product is not found during order creation', async () => {
+        // Mock the product fetch function to return null (invalid product ID)
+        (fetchProductById as jest.Mock).mockResolvedValue(null);
 
-        // Mock the product fetch function to return a valid product
-        (fetchProductById as jest.Mock).mockResolvedValue({ id: 1, name: 'Widget', price: 10.00 });
+        const orderData = { userId: 1, productId: 999, quantity: 2 };
+        await expect(OrderService.createOrder(orderData, {})).rejects.toThrow('Product not found');
 
-        const orderData = { userId: 999, productId: 1, quantity: 2 };
-        await expect(OrderService.createOrder(orderData)).rejects.toThrow('User or Product not found');
-
-        expect(fetchUserById).toHaveBeenCalledWith(999);
-        expect(fetchProductById).toHaveBeenCalledWith(1);
+        expect(fetchProductById).toHaveBeenCalledWith(999);
     });
+
 
 });

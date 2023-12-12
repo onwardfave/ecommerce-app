@@ -20,6 +20,13 @@ export const baseAuth = async (req: Request, res: Response) => {
 
 
 export const register = async (req: Request, res: Response) => {
+
+    const { email, password, username } = req.body;
+
+    if (!email || !password || !username) {
+        throw new ValidationError('Username, Email, and password are required.');
+    }
+
     try {
         const user = await UserService.createUser(req.body);
         console.log('User in Controller:', user); // Log to verify the received user
@@ -28,6 +35,7 @@ export const register = async (req: Request, res: Response) => {
         console.error('Error in Controller:', error); // Log any errors
         return res.status(400).json({ message: error.message });
     }
+
 };
 
 /**
@@ -35,32 +43,11 @@ export const register = async (req: Request, res: Response) => {
  * @param req The request object containing information about the login request.
  * @param res The response object used to send a response back to the client.
  */
-export const login1 = async (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return sendError(res, 'Username and password are required.', 400);
-        }
-
-        const user = await UserService.validateUser(email, password);
-        if (!user) {
-            return sendError(res, 'Invalid username or password.', 401);
-        }
-
-        // Assuming 'user' object has a 'roles' field that is an array of role names
-        const role = user.role; // Replace with actual method to get roles
-
-        const { accessToken, refreshToken } = UserService.generateTokens(user.id.toString(), role);
-        return sendSuccess(res, { accessToken, refreshToken }, 'Login successful.');
-    } catch (error) {
-        console.error('Login failed:', error);
-        return sendError(res, 'Login failed due to an internal error.', 500);
-    }
-};
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
+
     try {
+
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -77,6 +64,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     } catch (error) {
         next(error); // Pass the error to the error-handling middleware
     }
+
 };
 
 
