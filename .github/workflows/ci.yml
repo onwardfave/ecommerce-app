@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and Push Docker Images
         run: |
-          VERSION_TAG=v0.2
+          VERSION_TAG=v0.3
 
           docker build -t onwardfave/auth-service:${VERSION_TAG} ./auth-service
           docker build -t onwardfave/product-service:${VERSION_TAG} ./product-service

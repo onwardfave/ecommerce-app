@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: docker.io/onwardfave/auth-service:v0.2  # Use your local image tag
+        image: docker.io/onwardfave/auth-service:v0.3  # Use your local image tag
         imagePullPolicy: Always 
         resources:
           requests:

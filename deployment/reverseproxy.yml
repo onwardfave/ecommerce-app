@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: reverseproxy
-        image: onwardfave/reverseproxy-service:v0.2  # Use your local image tag
+        image: onwardfave/reverseproxy-service:v0.3  # Use your local image tag
         imagePullPolicy: IfNotPresent  # Use the local image if available
         resources:
           requests:
