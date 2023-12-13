@@ -27,7 +27,7 @@ COPY --from=build /usr/src/app/dist ./dist
 COPY package*.json ./
 RUN npm install --only=production
 
-EXPOSE 3001
+EXPOSE 8080
 
 # Use Dockerize in CMD to wait for dependencies to be ready (example: waiting for MySQL)
 CMD ["dockerize", "-wait", "tcp://mysql:3306", "-timeout", "1m", "node", "dist/index.js"]
