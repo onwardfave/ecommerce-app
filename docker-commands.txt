@@ -27,6 +27,8 @@ Kubernetes Commands
 
 kubectl create configmap mysql-init-db --from-file=sql-scripts\init-db.sql
 
+
+
 To delete services in all namespaces: 
 ================================================================
 kubectl delete svc --all --all-namespaces

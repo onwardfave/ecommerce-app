@@ -2,7 +2,7 @@ import app from './app';
 import { sequelize } from './models';
 import logger from './utils/logger';
 
-const PORT: string | number = process.env.AUTH_SERVICE_PORT || 3001;
+const PORT: string | number = process.env.AUTH_SERVICE_PORT || 3004;
 
 
 process.on('uncaughtException', (error) => {
