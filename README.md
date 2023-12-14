@@ -121,7 +121,11 @@ Git is utilized for version control, with a structured commit history that refle
 
 Comprehensive error handling is in place, with consistent error responses and logging for debugging.
 
-The auth microservice, as a demonstration of this feature uses a standard error format for catching errors downstream.
+The auth microservice, as a demonstration of this feature uses a standard error format for catching errors downstream. The wiston logger is used for this purpose:
+
+This configuration is under
+
+auth-service\src\utils\logger.ts
 
 ### Testing
 
