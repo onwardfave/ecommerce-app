@@ -10,6 +10,13 @@ The system follows a microservices architecture pattern, with distinct services 
 
 ## Running the Code
 
+### Setting up the deployment:
+
+Make a copy of
+deployment\ecommerce-secret copy.yml
+
+And save it as deployment\ecommerce-secret.yml, and change the variables therein accordingly. Make sure the values are base 64 encoded.
+
 To run the app, you need docker installed. You can install and configure docker for development from the official docker site: https://docs.docker.com/engine/install/
 
 Once docker is installed, you also need to install kubernetes and configure a local cluster, let's name it docker-desktop
@@ -26,20 +33,39 @@ To set up the kubernetes database config map to create the relevant databases (e
 
 `kubectl create configmap mysql-init-db --from-file=sql-scripts\init-db.sql`
 
-Once that is done, open the deployments folder, and set up the environment variables such as MYSQL_ROOT_PASSWORD under
+Once that is done, open the deployments folder, and set up the environment variables such as MYSQL_ROOT_PASSWORD under the deployment/ecommerce-secret.yml file you created earlier.
 
-[Title](deployment/ecommerce-config.yml) and [Title](deployment/ecommerce-secret.yml)
+[Config File](deployment/ecommerce-config.yml)
 
 These variables are named in a way that is easy to understand, but they essentially include database names.
 
 Again, set up the environment variables in the github repository for the github CI/CD pipeline.
 
-
 Once that is done, you can run the kubernetes cluster on the docker-desktop context by running the containers using the following commands:
 
 `kubectl apply -f ./deployment`
 
-![Alt text](images/kubectldeploy.PNG)
+![Deployment Image](images/kubectldeploy.PNG)
+
+This will execute the kubernetes deployment and services files.
+
+After a few seconds, all the pods and services should be running and you can check if all services and pods are running thus:
+
+`kubectl get svc -o wide`
+
+The output of the same should look like this:
+
+![Services Image](images/services.PNG)
+
+Check that all pods are up and running:
+`kubectl get pods -o wide`
+
+You should be able to see an output similar to this:
+![Pods Image](./images/deployments.PNG)
+
+Please notice that in the respective deployments yaml files for the auth, order, and product services, we specified 2 replicas per service, and that each has two replicas running.
+
+Now, if any of the replicas is stopped for any reason, the system still functions as the kubernetes engine creates a new one to meet the specified threshhold.
 
 ## Requirements Implemented
 
@@ -53,7 +79,7 @@ Each service is built using Node.js and Express for ease of development and depl
 
 ### Concurrency Control
 
-Optimistic locking is implemented in the Product Service to manage concurrent updates to product information safely.
+Optimistic locking is implemented in the Product Service to manage concurrent updates to product information safely. Each product entry, for instance, maintains a version number that gets updated every time a change is made, to prevent multiple users from modifying the same product at the same time.
 
 ### Clustering and High Availability
 
@@ -64,24 +90,6 @@ The application is configured to deploy on multiple nodes using Kubernetes' depl
 
 The Nginx load balancer plays a crucial role in the microservices architecture of the e-commerce application. It sits in front of the user authentication, product management, and order processing services as a reverse proxy, directing incoming HTTP requests to the appropriate service based on the request path. Here's how it integrates with the system:
 
-#### Nginx Load Balancer Integration
-
-Functionality:
-Routing: Nginx evaluates incoming requests and forwards them to the corresponding microservice. For example, requests to /api/v0/auth are routed to the Auth Service.
-Load Distribution: In a production environment, Nginx can distribute incoming traffic across multiple instances of a microservice, providing load balancing to ensure even utilization of resources.
-High Availability: By monitoring the health of microservice instances, Nginx can reroute traffic away from unhealthy instances to maintain availability.
-Deployment:
-In local development, Nginx is configured within a Docker container specified in the docker-compose.yml file. It uses the Docker network to communicate with microservice containers.
-In Kubernetes, an Nginx Ingress Controller is used to achieve similar functionality. It acts as an entry point for all HTTP requests coming into the Kubernetes cluster.
-Configuration:
-The Nginx configuration file (nginx.conf) includes upstream definitions for each microservice and location blocks within the server context to define routing rules.
-SSL termination can be configured at the Nginx level, providing secure HTTPS communication.
-Benefits:
-Security: By centralizing entry into the application through Nginx, security measures like SSL/TLS, rate limiting, and IP filtering can be managed efficiently.
-Simplicity: Developers can run a single Nginx instance to manage traffic to all microservices, simplifying the network architecture.
-Performance: Nginx is highly performant and can handle a large number of concurrent connections with minimal resource usage.
-The implementation details and configuration specifics of the Nginx load balancer are documented within the nginx directory of the repository, and deployment instructions for both local and Kubernetes environments are provided. The use of Nginx enhances the scalability, reliability, and security of the e-commerce application.
-
 ### Database Integration
 
 MySQL database is used for persistent storage.
@@ -91,12 +99,14 @@ Each service connects to the database via Sequelize ORM, with a well-defined sch
 
 RESTful APIs are developed for each microservice, facilitating inter-service communication.
 Synchronous HTTP calls are used for direct service-to-service communication.
+Each of the microservices maintains its own database for loose coupling, and synchronous calls are made between the microservices to retrieve the relevant data.
 
 ### Authentication and Authorization
 
 JWT-based authentication is implemented to secure endpoints.
 Authorization logic ensures users can only access their data.
-General Requirements Met
+
+## General Requirements Met
 
 ### Code Quality
 
@@ -106,8 +116,12 @@ Expressive variable names and clear function definitions are used throughout the
 ### Version Control
 
 Git is utilized for version control, with a structured commit history that reflects the development process.
-Error Handling
+
+### Error Handling
+
 Comprehensive error handling is in place, with consistent error responses and logging for debugging.
+
+The auth microservice, as a demonstration of this feature uses a standard error format for catching errors downstream.
 
 ### Testing
 
@@ -149,7 +163,3 @@ The primary assumption is that the Kubernetes cluster is already configured and 
 ## Conclusion
 
 The e-commerce microservices application demonstrates the use of modern backend technologies to create a scalable, fault-tolerant system. With the foundation laid out, the system can be expanded with additional features and integrations.
-
-```
-
-```

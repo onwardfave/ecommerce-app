@@ -27,6 +27,9 @@ Kubernetes Commands
 
 kubectl create configmap mysql-init-db --from-file=sql-scripts\init-db.sql
 
+2. Run the kubernetes cluster:
+
+kubectl apply -f .\deployment
 
 
 To delete services in all namespaces: 
@@ -40,5 +43,15 @@ kubectl delete deployment --all --all-namespaces
 
 
 Listenting on local host after set up:
-=======================================================
+================================================================
 kubectl port-forward service/reverseproxy-service 8080:80
+
+
+Diagnosing Port Binding Errors on windows:
+Stop and restart Windows NAT Driver service
+================================================================
+net stop winnat
+
+Then 
+
+net start winnat
